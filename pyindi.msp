@@ -1,0 +1,1756 @@
+<?xml version="1.0"?>
+<Project version="2" rootmodule="">
+<Literal type="sipcomments">
+// PyIndi: Python binding to the Indi Library    
+// Copyright (c) 2012 Geehalel  &lt;geehalel@gmail.com&gt;
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+</Literal>
+  <HeaderDirectory name="IndiApi" parserargs="-I/usr/include/libindi" inputdirsuffix="" filefilter="*.h">
+    <HeaderFile name="eventloop.h" ignored="1">
+      <HeaderFileVersion md5="0b01bc89c1855b5db703b5de1e77f8b1" version="" parse="1"/>
+    </HeaderFile>
+    <HeaderFile name="fq.h" ignored="1">
+      <HeaderFileVersion md5="1a0bd1d6ef9f8346b7e5804a405a87a6" version="" parse="1"/>
+    </HeaderFile>
+    <HeaderFile name="indidriver.h" ignored="1">
+      <HeaderFileVersion md5="aad825205d23db80e10336ea505dc2da" version="" parse="1"/>
+    </HeaderFile>
+    <HeaderFile name="indidevapi.h" module="PyIndi">
+      <HeaderFileVersion md5="ea9dcb807dff05ca837791ad736663fc" version=""/>
+    </HeaderFile>
+    <HeaderFile name="base64.h" ignored="1">
+      <HeaderFileVersion md5="a057ce7371b2fdee074254c1e56dc207" version="" parse="1"/>
+    </HeaderFile>
+    <HeaderFile name="indiapi.h" module="PyIndi">
+      <HeaderFileVersion md5="22eff7ab17400b91f822f8fda2c8f03c" version=""/>
+    </HeaderFile>
+  </HeaderDirectory>
+  <HeaderDirectory name="IndiBase" parserargs="-I/usr/include/libindi" inputdirsuffix="" filefilter="*.h">
+    <HeaderFile name="indiccd.h" ignored="1">
+      <HeaderFileVersion md5="b816a2e7a0244c3abe8cda88ac02d7f7" version="" parse="1"/>
+    </HeaderFile>
+    <HeaderFile name="indifocuser.h" ignored="1">
+      <HeaderFileVersion md5="87138b50671077c85ce3f1e826f8b097" version="" parse="1"/>
+    </HeaderFile>
+    <HeaderFile name="inditelescope.h" ignored="1">
+      <HeaderFileVersion md5="d22aa44c30df6f708b0d565cdef8981f" version="" parse="1"/>
+    </HeaderFile>
+    <HeaderFile name="indiusbdevice.h" ignored="1">
+      <HeaderFileVersion md5="5ce0ab265ecd98947fbaac7858368884" version="" parse="1"/>
+    </HeaderFile>
+    <HeaderFile name="indifilterinterface.h" ignored="1">
+      <HeaderFileVersion md5="bef70cf7f923c9f8df072d8d5c3a5e51" version="" parse="1"/>
+    </HeaderFile>
+    <HeaderFile name="indibase.h" module="PyIndi">
+      <HeaderFileVersion md5="d967fecf457d371feade9a6218405c74" version=""/>
+    </HeaderFile>
+    <HeaderFile name="indifilterwheel.h" ignored="1">
+      <HeaderFileVersion md5="516366be226e5a35c63f561f41cf1c21" version="" parse="1"/>
+    </HeaderFile>
+    <HeaderFile name="defaultdevice.h" ignored="1">
+      <HeaderFileVersion md5="91d18b592a06c8fcdeda1b5af2e22caa" version="" parse="1"/>
+    </HeaderFile>
+    <HeaderFile name="baseclient.h" module="PyIndi">
+      <HeaderFileVersion md5="c5092a8cc87ba115d4c0b939491f4966" version=""/>
+    </HeaderFile>
+    <HeaderFile name="indiproperty.h" module="PyIndi">
+      <HeaderFileVersion md5="a5d5f12f48c6f2626bce118654f06b3c" version=""/>
+    </HeaderFile>
+    <HeaderFile name="indidevice.h" ignored="1">
+      <HeaderFileVersion md5="7630c467a3aa16469b806d50ab6f6cd0" version="" parse="1"/>
+    </HeaderFile>
+    <HeaderFile name="indiguiderinterface.h" ignored="1">
+      <HeaderFileVersion md5="c5e9406b29f1f0372a221663a8f5aeaf" version="" parse="1"/>
+    </HeaderFile>
+    <HeaderFile name="basedevice.h" module="PyIndi">
+      <HeaderFileVersion md5="eb91af1691fcf01b28b4a521fc308acc" version=""/>
+    </HeaderFile>
+  </HeaderDirectory>
+  <HeaderDirectory name="IndiUtils" parserargs="-I/usr/include/libindi -I/usr/include/libnova" inputdirsuffix="" filefilter="*.h">
+    <HeaderFile name="indicom.h" module="PyIndi">
+      <HeaderFileVersion md5="90f55cd329f5c88cf6c5ff5e43731239" version=""/>
+    </HeaderFile>
+    <HeaderFile name="lilxml.h" ignored="1">
+      <HeaderFileVersion md5="7e6c3a849ce80f1aa17ab11d9099abfa" version="" parse="1"/>
+    </HeaderFile>
+  </HeaderDirectory>
+  <Module name="PyIndi" version="1">
+<Literal type="directives">
+%DefaultEncoding &quot;UTF-8&quot;
+</Literal>
+    <SipFile name="indiapi.h">
+      <Enum name="ISState">
+        <EnumValue name="ISS_OFF"/>
+        <EnumValue name="ISS_ON"/>
+      </Enum>
+      <Enum name="IPState">
+        <EnumValue name="IPS_IDLE"/>
+        <EnumValue name="IPS_OK"/>
+        <EnumValue name="IPS_BUSY"/>
+        <EnumValue name="IPS_ALERT"/>
+      </Enum>
+      <Enum name="ISRule">
+        <EnumValue name="ISR_1OFMANY"/>
+        <EnumValue name="ISR_ATMOST1"/>
+        <EnumValue name="ISR_NOFMANY"/>
+      </Enum>
+      <Enum name="IPerm">
+        <EnumValue name="IP_RO"/>
+        <EnumValue name="IP_WO"/>
+        <EnumValue name="IP_RW"/>
+      </Enum>
+      <Class name="IText" struct="1">
+        <Variable name="name" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;name, sipVal, 32);
+    sipCpp-&gt;name[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="label" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;label, sipVal, 32);
+    sipCpp-&gt;label[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="text" type="char *"/>
+        <Variable name="tvp" type="_ITextVectorProperty *"/>
+        <Variable name="aux0" type="void *"/>
+        <Variable name="aux1" type="void *"/>
+        <OperatorMethod status="unknown" name="=" rtype="IText &amp;">
+          <Argument type="const IText &amp;" unnamed="1"/>
+        </OperatorMethod>
+      </Class>
+      <Class name="_ITextVectorProperty" struct="1">
+        <Variable name="device" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;device, sipVal, 32);
+    sipCpp-&gt;device[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="name" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;name, sipVal, 32);
+    sipCpp-&gt;name[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="label" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;label, sipVal, 32);
+    sipCpp-&gt;label[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="group" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;group, sipVal, 32);
+    sipCpp-&gt;group[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="p" type="IPerm"/>
+        <Variable name="timeout" type="double"/>
+        <Variable name="s" type="IPState"/>
+        <Variable name="tp" type="IText *">
+<Literal type="getcode">
+PyObject *l;
+
+     // Create the Python list of the correct length.
+     if ((l = PyList_New(sipCpp -&gt; ntp)) == NULL)
+         return NULL;
+
+     // Go through each element in the C++ instance and convert it to a
+    // wrapped object.
+    for (int i = 0; i &lt;(int)sipCpp -&gt; ntp; ++i)
+    {
+       // Add the wrapper to the list.
+        PyList_SET_ITEM(l, i, sipConvertFromType(&amp;(sipCpp -&gt; tp[i]), sipType_IText,NULL));
+    }
+
+    // Return the Python list.
+    sipPy=l;
+</Literal>
+<Literal type="setcode">
+PyObject *iterator = PyObject_GetIter(sipPy);
+    PyObject *item;
+    int i=0;
+     if (sipCpp-&gt;tp) free(sipCpp-&gt;tp);
+     sipCpp-&gt;tp=(IText *)malloc(PyList_GET_SIZE(sipPy)*sizeof(IText));
+
+     while ((item = PyIter_Next(iterator)))
+     {
+         sipCpp-&gt;tp[i++]=*((IText *)sipConvertToType(item, sipType_IText, NULL, 0, NULL, NULL));
+         Py_DECREF(item);
+     }
+
+     Py_DECREF(iterator);
+</Literal>
+        </Variable>
+        <Variable name="ntp" type="int"/>
+        <Variable name="timestamp" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;timestamp, sipVal, 32);
+    sipCpp-&gt;timestamp[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="aux" type="void *"/>
+        <OperatorMethod status="unknown" name="=" rtype="_ITextVectorProperty &amp;">
+          <Argument type="const _ITextVectorProperty &amp;" unnamed="1"/>
+        </OperatorMethod>
+      </Class>
+      <Typedef name="ITextVectorProperty" type="_ITextVectorProperty"/>
+      <Class name="INumber" struct="1">
+        <Variable name="name" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;name, sipVal, 32);
+    sipCpp-&gt;name[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="label" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;label, sipVal, 32);
+    sipCpp-&gt;label[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="format" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;format, sipVal, 32);
+    sipCpp-&gt;format[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="min" type="double"/>
+        <Variable name="max" type="double"/>
+        <Variable name="step" type="double"/>
+        <Variable name="value" type="double"/>
+        <Variable name="nvp" type="_INumberVectorProperty *"/>
+        <Variable name="aux0" type="void *"/>
+        <Variable name="aux1" type="void *"/>
+        <OperatorMethod status="unknown" name="=" rtype="INumber &amp;">
+          <Argument type="const INumber &amp;" unnamed="1"/>
+        </OperatorMethod>
+      </Class>
+      <Class name="_INumberVectorProperty" struct="1">
+        <Variable name="device" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;device, sipVal, 32);
+    sipCpp-&gt;device[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="name" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;name, sipVal, 32);
+    sipCpp-&gt;name[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="label" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;label, sipVal, 32);
+    sipCpp-&gt;label[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="group" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;group, sipVal, 32);
+    sipCpp-&gt;group[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="p" type="IPerm"/>
+        <Variable name="timeout" type="double"/>
+        <Variable name="s" type="IPState"/>
+        <Variable name="np" type="INumber *">
+<Literal type="getcode">
+PyObject *l;
+
+     // Create the Python list of the correct length.
+     if ((l = PyList_New(sipCpp -&gt; nnp)) == NULL)
+         return NULL;
+
+     // Go through each element in the C++ instance and convert it to a
+    // wrapped object.
+    for (int i = 0; i &lt;(int)sipCpp -&gt; nnp; ++i)
+    {
+       // Add the wrapper to the list.
+        PyList_SET_ITEM(l, i, sipConvertFromType(&amp;(sipCpp -&gt; np[i]), sipType_INumber,NULL));
+    }
+
+    // Return the Python list.
+    sipPy=l;
+</Literal>
+<Literal type="setcode">
+PyObject *iterator = PyObject_GetIter(sipPy);
+    PyObject *item;
+    int i=0;
+     if (sipCpp-&gt;np) free(sipCpp-&gt;np);
+     sipCpp-&gt;np=(INumber *)malloc(PyList_GET_SIZE(sipPy)*sizeof(INumber));
+
+     while ((item = PyIter_Next(iterator)))
+     {
+         sipCpp-&gt;np[i++]=*((INumber *)sipConvertToType(item, sipType_INumber, NULL, 0, NULL, NULL));
+         Py_DECREF(item);
+     }
+
+     Py_DECREF(iterator);
+</Literal>
+        </Variable>
+        <Variable name="nnp" type="int"/>
+        <Variable name="timestamp" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;timestamp, sipVal, 32);
+    sipCpp-&gt;timestamp[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="aux" type="void *"/>
+        <OperatorMethod status="unknown" name="=" rtype="_INumberVectorProperty &amp;">
+          <Argument type="const _INumberVectorProperty &amp;" unnamed="1"/>
+        </OperatorMethod>
+      </Class>
+      <Typedef name="INumberVectorProperty" type="_INumberVectorProperty"/>
+      <Class name="ISwitch" struct="1">
+        <Variable name="name" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;name, sipVal, 32);
+    sipCpp-&gt;name[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="label" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;label, sipVal, 32);
+    sipCpp-&gt;label[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="s" type="ISState"/>
+        <Variable name="svp" type="_ISwitchVectorProperty *"/>
+        <Variable name="aux" type="void *"/>
+        <OperatorMethod status="unknown" name="=" rtype="ISwitch &amp;">
+          <Argument type="const ISwitch &amp;" unnamed="1"/>
+        </OperatorMethod>
+      </Class>
+      <Class name="_ISwitchVectorProperty" struct="1">
+        <Variable name="device" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;device, sipVal, 32);
+    sipCpp-&gt;device[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="name" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;name, sipVal, 32);
+    sipCpp-&gt;name[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="label" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;label, sipVal, 32);
+    sipCpp-&gt;label[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="group" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;group, sipVal, 32);
+    sipCpp-&gt;group[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="p" type="IPerm"/>
+        <Variable name="r" type="ISRule"/>
+        <Variable name="timeout" type="double"/>
+        <Variable name="s" type="IPState"/>
+        <Variable name="sp" type="ISwitch *">
+<Literal type="getcode">
+PyObject *l;
+
+     // Create the Python list of the correct length.
+     if ((l = PyList_New(sipCpp -&gt; nsp)) == NULL)
+         return NULL;
+
+     // Go through each element in the C++ instance and convert it to a
+    // wrapped object.
+    for (int i = 0; i &lt;(int)sipCpp -&gt; nsp; ++i)
+    {
+       // Add the wrapper to the list.
+        PyList_SET_ITEM(l, i, sipConvertFromType(&amp;(sipCpp -&gt; sp[i]), sipType_ISwitch,NULL));
+    }
+
+    // Return the Python list.
+    sipPy=l;
+</Literal>
+<Literal type="setcode">
+PyObject *iterator = PyObject_GetIter(sipPy);
+    PyObject *item;
+    int i=0;
+     if (sipCpp-&gt;sp) free(sipCpp-&gt;sp);
+     sipCpp-&gt;sp=(ISwitch *)malloc(PyList_GET_SIZE(sipPy)*sizeof(ISwitch));
+
+     while ((item = PyIter_Next(iterator)))
+     {
+         sipCpp-&gt;sp[i++]=*((ISwitch *)sipConvertToType(item, sipType_ISwitch, NULL, 0, NULL, NULL));
+         Py_DECREF(item);
+     }
+
+     Py_DECREF(iterator);
+</Literal>
+        </Variable>
+        <Variable name="nsp" type="int"/>
+        <Variable name="timestamp" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;timestamp, sipVal, 32);
+    sipCpp-&gt;timestamp[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="aux" type="void *"/>
+        <OperatorMethod status="unknown" name="=" rtype="_ISwitchVectorProperty &amp;">
+          <Argument type="const _ISwitchVectorProperty &amp;" unnamed="1"/>
+        </OperatorMethod>
+      </Class>
+      <Typedef name="ISwitchVectorProperty" type="_ISwitchVectorProperty"/>
+      <Class name="ILight" struct="1">
+        <Variable name="name" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;name, sipVal, 32);
+    sipCpp-&gt;name[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="label" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;label, sipVal, 32);
+    sipCpp-&gt;label[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="s" type="IPState"/>
+        <Variable name="lvp" type="_ILightVectorProperty *"/>
+        <Variable name="aux" type="void *"/>
+        <OperatorMethod status="unknown" name="=" rtype="ILight &amp;">
+          <Argument type="const ILight &amp;" unnamed="1"/>
+        </OperatorMethod>
+      </Class>
+      <Class name="_ILightVectorProperty" struct="1">
+        <Variable name="device" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;device, sipVal, 32);
+    sipCpp-&gt;device[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="name" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;name, sipVal, 32);
+    sipCpp-&gt;name[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="label" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;label, sipVal, 32);
+    sipCpp-&gt;label[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="group" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;group, sipVal, 32);
+    sipCpp-&gt;group[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="s" type="IPState"/>
+        <Variable name="lp" type="ILight *">
+<Literal type="getcode">
+PyObject *l;
+
+     // Create the Python list of the correct length.
+     if ((l = PyList_New(sipCpp -&gt; nlp)) == NULL)
+         return NULL;
+
+     // Go through each element in the C++ instance and convert it to a
+    // wrapped object.
+    for (int i = 0; i &lt;(int)sipCpp -&gt; nlp; ++i)
+    {
+       // Add the wrapper to the list.
+        PyList_SET_ITEM(l, i, sipConvertFromType(&amp;(sipCpp -&gt; lp[i]), sipType_ILight,NULL));
+    }
+
+    // Return the Python list.
+    sipPy=l;
+</Literal>
+<Literal type="setcode">
+PyObject *iterator = PyObject_GetIter(sipPy);
+    PyObject *item;
+    int i=0;
+     if (sipCpp-&gt;lp) free(sipCpp-&gt;lp);
+     sipCpp-&gt;lp=(ILight *)malloc(PyList_GET_SIZE(sipPy)*sizeof(ILight));
+
+     while ((item = PyIter_Next(iterator)))
+     {
+         sipCpp-&gt;lp[i++]=*((ILight *)sipConvertToType(item, sipType_ILight, NULL, 0, NULL, NULL));
+         Py_DECREF(item);
+     }
+
+     Py_DECREF(iterator);
+</Literal>
+        </Variable>
+        <Variable name="nlp" type="int"/>
+        <Variable name="timestamp" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;timestamp, sipVal, 32);
+    sipCpp-&gt;timestamp[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="aux" type="void *"/>
+        <OperatorMethod status="unknown" name="=" rtype="_ILightVectorProperty &amp;">
+          <Argument type="const _ILightVectorProperty &amp;" unnamed="1"/>
+        </OperatorMethod>
+      </Class>
+      <Typedef name="ILightVectorProperty" type="_ILightVectorProperty"/>
+      <Class name="IBLOB" struct="1">
+        <Variable name="name" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;name, sipVal, 32);
+    sipCpp-&gt;name[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="label" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;label, sipVal, 32);
+    sipCpp-&gt;label[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="format" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;format, sipVal, 32);
+    sipCpp-&gt;format[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="blob" type="void *">
+<Literal type="getcode">
+Py_buffer blobbuffer;
+PyBuffer_FillInfo(&amp;blobbuffer, (PyObject *)sipPy, sipCpp-&gt;blob, sipCpp-&gt;bloblen, 1, 0);
+sipPy=PyMemoryView_FromBuffer(&amp;blobbuffer);
+</Literal>
+        </Variable>
+        <Variable name="bloblen" type="int"/>
+        <Variable name="size" type="int"/>
+        <Variable name="bvp" type="_IBLOBVectorProperty *"/>
+        <Variable name="aux0" type="void *"/>
+        <Variable name="aux1" type="void *"/>
+        <Variable name="aux2" type="void *"/>
+        <OperatorMethod status="unknown" name="=" rtype="IBLOB &amp;">
+          <Argument type="const IBLOB &amp;" unnamed="1"/>
+        </OperatorMethod>
+      </Class>
+      <Class name="_IBLOBVectorProperty" struct="1">
+        <Variable name="device" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;device, sipVal, 32);
+    sipCpp-&gt;device[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="name" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;name, sipVal, 32);
+    sipCpp-&gt;name[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="label" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;label, sipVal, 32);
+    sipCpp-&gt;label[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="group" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;group, sipVal, 32);
+    sipCpp-&gt;group[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="p" type="IPerm"/>
+        <Variable name="timeout" type="double"/>
+        <Variable name="s" type="IPState"/>
+        <Variable name="bp" type="IBLOB *">
+<Literal type="getcode">
+PyObject *l;
+
+     // Create the Python list of the correct length.
+     if ((l = PyList_New(sipCpp -&gt; nbp)) == NULL)
+         return NULL;
+
+     // Go through each element in the C++ instance and convert it to a
+    // wrapped object.
+    for (int i = 0; i &lt;(int)sipCpp -&gt; nbp; ++i)
+    {
+       // Add the wrapper to the list.
+        PyList_SET_ITEM(l, i, sipConvertFromType(&amp;(sipCpp -&gt; bp[i]), sipType_IBLOB,NULL));
+    }
+
+    // Return the Python list.
+    sipPy=l;
+</Literal>
+<Literal type="setcode">
+PyObject *iterator = PyObject_GetIter(sipPy);
+    PyObject *item;
+    int i=0;
+     if (sipCpp-&gt;bp) free(sipCpp-&gt;bp);
+     sipCpp-&gt;bp=(IBLOB *)malloc(PyList_GET_SIZE(sipPy) * sizeof(IBLOB));
+
+     while ((item = PyIter_Next(iterator)))
+     {
+         sipCpp-&gt;bp[i++]=*((IBLOB *)sipConvertToType(item, sipType_IBLOB, NULL, 0, NULL, NULL));
+         Py_DECREF(item);
+     }
+
+     Py_DECREF(iterator);
+</Literal>
+        </Variable>
+        <Variable name="nbp" type="int"/>
+        <Variable name="timestamp" type="char *">
+<Literal type="setcode">
+/* mon code */
+   char *sipVal;
+    sipVal = (char *)sipString_AsUTF8String(&amp;sipPy);
+
+    if (PyErr_Occurred() != NULL)
+        return -1;
+
+    memcpy(sipCpp-&gt;timestamp, sipVal, 32);
+    sipCpp-&gt;timestamp[31]='\0';
+</Literal>
+        </Variable>
+        <Variable name="aux" type="void *"/>
+        <OperatorMethod status="unknown" name="=" rtype="_IBLOBVectorProperty &amp;">
+          <Argument type="const _IBLOBVectorProperty &amp;" unnamed="1"/>
+        </OperatorMethod>
+      </Class>
+      <Typedef name="IBLOBVectorProperty" type="_IBLOBVectorProperty"/>
+    </SipFile>
+    <SipFile name="baseclient.h">
+      <Namespace name="INDI">
+        <Class name="BaseClient" bases="public INDI::BaseMediator">
+          <Enum name="">
+            <EnumValue name="INDI_DEVICE_NOT_FOUND"/>
+            <EnumValue name="INDI_PROPERTY_INVALID"/>
+            <EnumValue name="INDI_PROPERTY_DUPLICATED"/>
+            <EnumValue name="INDI_DISPATCH_ERROR"/>
+          </Enum>
+          <Constructor name="BaseClient">
+          </Constructor>
+          <Method name="setServer" rtype="void">
+            <Argument type="const char *" unnamed="1" name="hostname"/>
+            <Argument type="unsigned int" unnamed="1" name="port"/>
+          </Method>
+          <Method name="watchDevice" rtype="void">
+            <Argument type="const char *" unnamed="1" name="deviceName"/>
+          </Method>
+          <Method annos="ReleaseGIL" name="disconnectServer" rtype="bool">
+          </Method>
+          <Method name="connectDevice" rtype="void">
+            <Argument type="const char *" unnamed="1" name="deviceName"/>
+          </Method>
+          <Method name="disconnectDevice" rtype="void">
+            <Argument type="const char *" unnamed="1" name="deviceName"/>
+          </Method>
+          <Method name="getDevice" rtype="INDI::BaseDevice *">
+            <Argument type="const char *" unnamed="1" name="deviceName"/>
+          </Method>
+          <Method name="getDevices" rtype="const std::vector&lt;INDI::BaseDevice*,std::allocator&lt;INDI::BaseDevice*&gt; &gt; &amp;" pytype="SIP_PYLIST" const="1">
+<Literal type="methcode">
+PyObject *l;
+    const std::vector&lt;INDI::BaseDevice*, std::allocator&lt;INDI::BaseDevice*&gt; &gt; *r;
+    r=&amp;(sipCpp-&gt;getDevices());
+    
+    // Create the Python list of the correct length.
+    if ((l = PyList_New(r-&gt;size())) == NULL)
+        return NULL;
+
+    // Go through each element in the C++ instance and convert it to a
+    // wrapped P2d.
+    for (int i = 0; i &lt; (int)(r-&gt;size()); ++i)
+    {
+        //INDI::Property *cpp = new INDI::Property(r -&gt; at(i));
+        INDI::BaseDevice *cpp = r-&gt;at(i);
+        PyObject *pobj;
+
+        // Get the Python wrapper for the Type instance, creating a new
+        // one if necessary, and handle any ownership transfer.
+        if ((pobj = sipConvertFromType(cpp, 
+            sipType_INDI_BaseDevice, 
+            NULL)) == NULL)
+        {
+            // There was an error so garbage collect the Python list.
+            Py_DECREF(l);
+            return NULL;
+        }
+
+        // Add the wrapper to the list.
+        PyList_SET_ITEM(l, i, pobj);
+    }
+
+    // Return the Python list.
+    return l;
+</Literal>
+          </Method>
+          <Method name="setBLOBMode" rtype="void">
+            <Argument type="BLOBHandling" unnamed="1" name="blobH"/>
+            <Argument type="const char *" unnamed="1" name="dev"/>
+            <Argument type="const char *" unnamed="1" name="prop" default="0"/>
+          </Method>
+          <Method name="listenHelper" rtype="void *" static="1">
+            <Argument type="void *" unnamed="1" name="context"/>
+          </Method>
+          <Method name="getHost" rtype="const char *">
+          </Method>
+          <Method name="getPort" rtype="int">
+          </Method>
+          <Method name="sendNewText" rtype="void">
+            <Argument type="ITextVectorProperty *" unnamed="1" name="pp"/>
+          </Method>
+          <Method name="sendNewText" rtype="void">
+            <Argument type="const char *" unnamed="1" name="deviceName"/>
+            <Argument type="const char *" unnamed="1" name="propertyName"/>
+            <Argument type="const char *" unnamed="1" name="elementName"/>
+            <Argument type="const char *" unnamed="1" name="text"/>
+          </Method>
+          <Method name="sendNewNumber" rtype="void">
+            <Argument type="INumberVectorProperty *" unnamed="1" name="pp"/>
+          </Method>
+          <Method name="sendNewNumber" rtype="void">
+            <Argument type="const char *" unnamed="1" name="deviceName"/>
+            <Argument type="const char *" unnamed="1" name="propertyName"/>
+            <Argument type="const char *" unnamed="1" name="elementName"/>
+            <Argument type="double" unnamed="1" name="value"/>
+          </Method>
+          <Method name="sendNewSwitch" rtype="void">
+            <Argument type="ISwitchVectorProperty *" unnamed="1" name="pp"/>
+          </Method>
+          <Method name="sendNewSwitch" rtype="void">
+            <Argument type="const char *" unnamed="1" name="deviceName"/>
+            <Argument type="const char *" unnamed="1" name="propertyName"/>
+            <Argument type="const char *" unnamed="1" name="elementName"/>
+          </Method>
+          <Method name="startBlob" rtype="void">
+            <Argument type="const char *" unnamed="1" name="devName"/>
+            <Argument type="const char *" unnamed="1" name="propName"/>
+            <Argument type="const char *" unnamed="1" name="timestamp"/>
+          </Method>
+          <Method name="sendOneBlob" rtype="void">
+            <Argument type="const char *" unnamed="1" name="blobName"/>
+            <Argument type="unsigned int" unnamed="1" name="blobSize"/>
+            <Argument type="const char *" unnamed="1" name="blobFormat"/>
+            <Argument type="void *" unnamed="1" name="blobBuffer"/>
+          </Method>
+          <Method name="finishBlob" rtype="void">
+          </Method>
+          <Method name="removeDevice" rtype="int" access="protected">
+            <Argument type="const char *" unnamed="1" name="devName"/>
+            <Argument type="char *" unnamed="1" name="errmsg"/>
+          </Method>
+          <Method status="ignored" name="delPropertyCmd" rtype="int" access="protected">
+            <Argument type="XMLEle *" unnamed="1" name="root"/>
+            <Argument type="char *" unnamed="1" name="errmsg"/>
+          </Method>
+          <Method name="findDev" rtype="INDI::BaseDevice *" access="protected">
+            <Argument type="const char *" unnamed="1" name="devName"/>
+            <Argument type="char *" unnamed="1" name="errmsg"/>
+          </Method>
+          <Method status="ignored" name="addDevice" rtype="INDI::BaseDevice *" access="protected">
+            <Argument type="XMLEle *" unnamed="1" name="dep"/>
+            <Argument type="char *" unnamed="1" name="errmsg"/>
+          </Method>
+          <Method status="ignored" name="findDev" rtype="INDI::BaseDevice *" access="protected">
+            <Argument type="XMLEle *" unnamed="1" name="root"/>
+            <Argument type="int" unnamed="1" name="create"/>
+            <Argument type="char *" unnamed="1" name="errmsg"/>
+          </Method>
+          <Method status="ignored" name="messageCmd" rtype="int" access="protected">
+            <Argument type="XMLEle *" unnamed="1" name="root"/>
+            <Argument type="char *" unnamed="1" name="errmsg"/>
+          </Method>
+          <Method name="setDriverConnection" rtype="void" access="private">
+            <Argument type="bool" unnamed="1" name="status"/>
+            <Argument type="const char *" unnamed="1" name="deviceName"/>
+          </Method>
+          <Destructor name="BaseClient" virtual="1">
+          </Destructor>
+          <Method annos="ReleaseGIL" name="connectServer" rtype="bool">
+          </Method>
+          <Method status="ignored" name="dispatchCommand" rtype="int" access="protected">
+            <Argument type="XMLEle *" unnamed="1" name="root"/>
+            <Argument type="char *" unnamed="1" name="errmsg"/>
+          </Method>
+          <Method annos="ReleaseGIL" name="listenINDI" rtype="void" access="private">
+          </Method>
+          <OperatorMethod name="=" rtype="INDI::BaseClient &amp;" access="private">
+            <Argument type="const INDI::BaseClient &amp;" unnamed="1"/>
+          </OperatorMethod>
+        </Class>
+      </Namespace>
+    </SipFile>
+    <SipFile name="basedevice.h">
+      <Namespace name="INDI">
+        <Class name="BaseDevice">
+          <Constructor name="BaseDevice">
+          </Constructor>
+          <Destructor name="BaseDevice">
+          </Destructor>
+          <Enum name="INDI_ERROR">
+            <EnumValue name="INDI_DEVICE_NOT_FOUND"/>
+            <EnumValue name="INDI_PROPERTY_INVALID"/>
+            <EnumValue name="INDI_PROPERTY_DUPLICATED"/>
+            <EnumValue name="INDI_DISPATCH_ERROR"/>
+          </Enum>
+          <Method name="getNumber" rtype="INumberVectorProperty *">
+            <Argument type="const char *" unnamed="1" name="name"/>
+          </Method>
+          <Method name="getText" rtype="ITextVectorProperty *">
+            <Argument type="const char *" unnamed="1" name="name"/>
+          </Method>
+          <Method name="getSwitch" rtype="ISwitchVectorProperty *">
+            <Argument type="const char *" unnamed="1" name="name"/>
+          </Method>
+          <Method name="getLight" rtype="ILightVectorProperty *">
+            <Argument type="const char *" unnamed="1" name="name"/>
+          </Method>
+          <Method name="getBLOB" rtype="IBLOBVectorProperty *">
+            <Argument type="const char *" unnamed="1" name="name"/>
+          </Method>
+          <Method name="removeProperty" rtype="int">
+            <Argument type="const char *" unnamed="1" name="name"/>
+            <Argument type="char *" unnamed="1" name="errmsg"/>
+          </Method>
+          <Method name="registerProperty" rtype="void">
+            <Argument type="void *" unnamed="1" name="p"/>
+            <Argument type="INDI_TYPE" unnamed="1" name="type"/>
+          </Method>
+          <Method name="getRawProperty" rtype="void *">
+            <Argument type="const char *" unnamed="1" name="name"/>
+            <Argument type="INDI_TYPE" unnamed="1" name="type" default="INDI_UNKNOWN"/>
+          </Method>
+          <Method name="getProperty" rtype="INDI::Property *">
+            <Argument type="const char *" unnamed="1" name="name"/>
+            <Argument type="INDI_TYPE" unnamed="1" name="type" default="INDI_UNKNOWN"/>
+          </Method>
+          <Method status="ignored" name="buildSkeleton" rtype="void">
+            <Argument type="const char *" unnamed="1" name="filename"/>
+          </Method>
+          <Method name="isConnected" rtype="bool">
+          </Method>
+          <Method name="setDeviceName" rtype="void">
+            <Argument type="const char *" unnamed="1" name="dev"/>
+          </Method>
+          <Method name="getDeviceName" rtype="const char *">
+          </Method>
+          <Method name="addMessage" rtype="void">
+            <Argument type="const char *" unnamed="1" name="msg"/>
+          </Method>
+          <Method status="ignored" name="checkMessage" rtype="void">
+            <Argument type="XMLEle *" unnamed="1" name="root"/>
+          </Method>
+          <Method status="ignored" name="doMessage" rtype="void">
+            <Argument type="XMLEle *" unnamed="1" name="msg"/>
+          </Method>
+          <Method name="messageQueue" rtype="const char *">
+            <Argument type="int" unnamed="1" name="index"/>
+          </Method>
+          <Method name="lastMessage" rtype="const char *">
+          </Method>
+          <Method name="setMediator" rtype="void">
+            <Argument type="INDI::BaseMediator *" unnamed="1" name="med"/>
+          </Method>
+          <Method name="getMediator" rtype="INDI::BaseMediator *">
+          </Method>
+          <Method status="ignored" name="buildProp" rtype="int" access="protected">
+            <Argument type="XMLEle *" unnamed="1" name="root"/>
+            <Argument type="char *" unnamed="1" name="errmsg"/>
+          </Method>
+          <Method status="ignored" name="setValue" rtype="int" access="protected">
+            <Argument type="XMLEle *" unnamed="1" name="root"/>
+            <Argument type="char *" unnamed="1" name="errmsg"/>
+          </Method>
+          <Method status="ignored" name="setBLOB" rtype="int" access="protected">
+            <Argument type="IBLOBVectorProperty *" unnamed="1" name="pp"/>
+            <Argument type="XMLEle *" unnamed="1" name="root"/>
+            <Argument type="char *" unnamed="1" name="errmsg"/>
+          </Method>
+          <Method name="getProperties" rtype="std::vector&lt;INDI::Property*,std::allocator&lt;INDI::Property*&gt; &gt; *" pytype="SIP_PYLIST">
+<Literal type="methcode">
+PyObject *l;
+    std::vector&lt;INDI::Property*, std::allocator&lt;INDI::Property*&gt; &gt; *r;
+    r=sipCpp-&gt;getProperties();
+    
+    // Create the Python list of the correct length.
+    if ((l = PyList_New(r -&gt; size())) == NULL)
+        return NULL;
+
+    // Go through each element in the C++ instance and convert it to a
+    // wrapped P2d.
+    for (int i = 0; i &lt; (int)(r -&gt; size()); ++i)
+    {
+        //INDI::Property *cpp = new INDI::Property(r -&gt; at(i));
+        INDI::Property *cpp = r -&gt; at(i);
+        PyObject *pobj;
+
+        // Get the Python wrapper for the Type instance, creating a new
+        // one if necessary, and handle any ownership transfer.
+        if ((pobj = sipConvertFromType(cpp, 
+            sipType_INDI_Property, 
+            NULL)) == NULL)
+        {
+            // There was an error so garbage collect the Python list.
+            Py_DECREF(l);
+            return NULL;
+        }
+
+        // Add the wrapper to the list.
+        PyList_SET_ITEM(l, i, pobj);
+    }
+
+    // Return the Python list.
+    return l;
+</Literal>
+          </Method>
+          <Method name="getDriverName" rtype="const char *">
+          </Method>
+          <Method name="getDriverExec" rtype="const char *">
+          </Method>
+          <OperatorMethod name="=" rtype="INDI::BaseDevice &amp;" access="private">
+            <Argument type="const INDI::BaseDevice &amp;" unnamed="1"/>
+          </OperatorMethod>
+        </Class>
+      </Namespace>
+    </SipFile>
+    <SipFile name="indibase.h">
+      <Namespace name="INDI">
+        <OpaqueClass status="ignored" name="BaseClient"/>
+        <OpaqueClass status="ignored" name="BaseDevice"/>
+        <OpaqueClass status="ignored" name="DefaultDevice"/>
+        <OpaqueClass status="ignored" name="FilterInterface"/>
+        <OpaqueClass status="ignored" name="GuiderInterface"/>
+        <OpaqueClass status="ignored" name="CCD"/>
+        <OpaqueClass status="ignored" name="Telescope"/>
+        <OpaqueClass status="ignored" name="FilterWheel"/>
+        <OpaqueClass status="ignored" name="Focuser"/>
+        <OpaqueClass status="ignored" name="USBDevice"/>
+        <OpaqueClass status="ignored" name="Property"/>
+        <Class name="BaseMediator">
+          <Method annos="HoldGIL" name="newDevice" rtype="void" virtual="1" abstract="1">
+            <Argument type="INDI::BaseDevice *" unnamed="1" name="dp"/>
+          </Method>
+          <Method name="newProperty" rtype="void" virtual="1" abstract="1">
+            <Argument type="INDI::Property *" unnamed="1" name="property"/>
+          </Method>
+          <Method name="removeProperty" rtype="void" virtual="1" abstract="1">
+            <Argument type="INDI::Property *" unnamed="1" name="property"/>
+          </Method>
+          <Method name="newBLOB" rtype="void" virtual="1" abstract="1">
+            <Argument type="IBLOB *" unnamed="1" name="bp"/>
+          </Method>
+          <Method name="newSwitch" rtype="void" virtual="1" abstract="1">
+            <Argument type="ISwitchVectorProperty *" unnamed="1" name="svp"/>
+          </Method>
+          <Method name="newNumber" rtype="void" virtual="1" abstract="1">
+            <Argument type="INumberVectorProperty *" unnamed="1" name="nvp"/>
+          </Method>
+          <Method name="newText" rtype="void" virtual="1" abstract="1">
+            <Argument type="ITextVectorProperty *" unnamed="1" name="tvp"/>
+          </Method>
+          <Method name="newLight" rtype="void" virtual="1" abstract="1">
+            <Argument type="ILightVectorProperty *" unnamed="1" name="lvp"/>
+          </Method>
+          <Method name="serverConnected" rtype="void" virtual="1" abstract="1">
+          </Method>
+          <Method name="serverDisconnected" rtype="void" virtual="1" abstract="1">
+            <Argument type="int" unnamed="1" name="exit_code"/>
+          </Method>
+          <Method name="newMessage" rtype="void" virtual="1" abstract="1">
+            <Argument type="INDI::BaseDevice *" unnamed="1" name="dp"/>
+            <Argument type="int" unnamed="1" name="messageID"/>
+          </Method>
+          <Destructor name="BaseMediator" virtual="1">
+          </Destructor>
+          <OperatorMethod name="=" rtype="INDI::BaseMediator &amp;" access="private">
+            <Argument type="const INDI::BaseMediator &amp;" unnamed="1"/>
+          </OperatorMethod>
+        </Class>
+      </Namespace>
+      <Enum name="INDI_TYPE">
+        <EnumValue name="INDI_NUMBER"/>
+        <EnumValue name="INDI_SWITCH"/>
+        <EnumValue name="INDI_TEXT"/>
+        <EnumValue name="INDI_LIGHT"/>
+        <EnumValue name="INDI_BLOB"/>
+        <EnumValue name="INDI_UNKNOWN"/>
+      </Enum>
+    </SipFile>
+    <SipFile name="indiproperty.h">
+      <Namespace name="INDI">
+        <Class name="Property">
+          <Constructor name="Property">
+          </Constructor>
+          <Destructor name="Property">
+          </Destructor>
+          <Method name="setProperty" rtype="void">
+            <Argument type="void *" unnamed="1"/>
+          </Method>
+          <Method name="setType" rtype="void">
+            <Argument type="INDI_TYPE" unnamed="1" name="t"/>
+          </Method>
+          <Method name="setRegistered" rtype="void">
+            <Argument type="bool" unnamed="1" name="r"/>
+          </Method>
+          <Method name="setDynamic" rtype="void">
+            <Argument type="bool" unnamed="1" name="d"/>
+          </Method>
+          <Method name="getProperty" rtype="void *">
+          </Method>
+          <Method name="getType" rtype="INDI_TYPE">
+          </Method>
+          <Method name="getRegistered" rtype="bool">
+          </Method>
+          <Method name="isDynamic" rtype="bool">
+          </Method>
+          <Method name="getName" rtype="const char *">
+          </Method>
+          <Method name="getLabel" rtype="const char *">
+          </Method>
+          <Method name="getGroupName" rtype="const char *">
+          </Method>
+          <Method name="getDeviceName" rtype="const char *">
+          </Method>
+          <Method name="getState" rtype="IPState">
+          </Method>
+          <Method name="getPermission" rtype="IPerm">
+          </Method>
+          <Method name="getNumber" rtype="INumberVectorProperty *">
+          </Method>
+          <Method name="getText" rtype="ITextVectorProperty *">
+          </Method>
+          <Method name="getSwitch" rtype="ISwitchVectorProperty *">
+          </Method>
+          <Method name="getLight" rtype="ILightVectorProperty *">
+          </Method>
+          <Method name="getBLOB" rtype="IBLOBVectorProperty *">
+          </Method>
+          <Method name="setBaseDevice" rtype="void">
+            <Argument type="INDI::BaseDevice *" unnamed="1" name="idp"/>
+          </Method>
+          <Method name="getBaseDevice" rtype="INDI::BaseDevice *">
+          </Method>
+          <OperatorMethod name="=" rtype="INDI::Property &amp;" access="private">
+            <Argument type="const INDI::Property &amp;" unnamed="1"/>
+          </OperatorMethod>
+        </Class>
+      </Namespace>
+    </SipFile>
+    <SipFile name="indidevapi.h">
+      <Function status="ignored" name="IDDefText" rtype="void">
+        <Argument type="const ITextVectorProperty *" unnamed="1" name="t"/>
+        <Argument type="const char *" unnamed="1" name="msg"/>
+        <Argument type="..." unnamed="1"/>
+      </Function>
+      <Function status="ignored" name="IDDefNumber" rtype="void">
+        <Argument type="const INumberVectorProperty *" unnamed="1" name="n"/>
+        <Argument type="const char *" unnamed="1" name="msg"/>
+        <Argument type="..." unnamed="1"/>
+      </Function>
+      <Function status="ignored" name="IDDefSwitch" rtype="void">
+        <Argument type="const ISwitchVectorProperty *" unnamed="1" name="s"/>
+        <Argument type="const char *" unnamed="1" name="msg"/>
+        <Argument type="..." unnamed="1"/>
+      </Function>
+      <Function status="ignored" name="IDDefLight" rtype="void">
+        <Argument type="const ILightVectorProperty *" unnamed="1" name="l"/>
+        <Argument type="const char *" unnamed="1" name="msg"/>
+        <Argument type="..." unnamed="1"/>
+      </Function>
+      <Function status="ignored" name="IDDefBLOB" rtype="void">
+        <Argument type="const IBLOBVectorProperty *" unnamed="1" name="b"/>
+        <Argument type="const char *" unnamed="1" name="msg"/>
+        <Argument type="..." unnamed="1"/>
+      </Function>
+      <Function status="ignored" name="IDSetText" rtype="void">
+        <Argument type="const ITextVectorProperty *" unnamed="1" name="t"/>
+        <Argument type="const char *" unnamed="1" name="msg"/>
+        <Argument type="..." unnamed="1"/>
+      </Function>
+      <Function status="ignored" name="IDSetNumber" rtype="void">
+        <Argument type="const INumberVectorProperty *" unnamed="1" name="n"/>
+        <Argument type="const char *" unnamed="1" name="msg"/>
+        <Argument type="..." unnamed="1"/>
+      </Function>
+      <Function status="ignored" name="IDSetSwitch" rtype="void">
+        <Argument type="const ISwitchVectorProperty *" unnamed="1" name="s"/>
+        <Argument type="const char *" unnamed="1" name="msg"/>
+        <Argument type="..." unnamed="1"/>
+      </Function>
+      <Function status="ignored" name="IDSetLight" rtype="void">
+        <Argument type="const ILightVectorProperty *" unnamed="1" name="l"/>
+        <Argument type="const char *" unnamed="1" name="msg"/>
+        <Argument type="..." unnamed="1"/>
+      </Function>
+      <Function status="ignored" name="IDSetBLOB" rtype="void">
+        <Argument type="const IBLOBVectorProperty *" unnamed="1" name="b"/>
+        <Argument type="const char *" unnamed="1" name="msg"/>
+        <Argument type="..." unnamed="1"/>
+      </Function>
+      <Function status="ignored" name="IDMessage" rtype="void">
+        <Argument type="const char *" unnamed="1" name="dev"/>
+        <Argument type="const char *" unnamed="1" name="msg"/>
+        <Argument type="..." unnamed="1"/>
+      </Function>
+      <Function status="ignored" name="IDDelete" rtype="void">
+        <Argument type="const char *" unnamed="1" name="dev"/>
+        <Argument type="const char *" unnamed="1" name="name"/>
+        <Argument type="const char *" unnamed="1" name="msg"/>
+        <Argument type="..." unnamed="1"/>
+      </Function>
+      <Function status="ignored" name="IDLog" rtype="void">
+        <Argument type="const char *" unnamed="1" name="msg"/>
+        <Argument type="..." unnamed="1"/>
+      </Function>
+      <Enum name="BLOBHandling">
+        <EnumValue name="B_NEVER"/>
+        <EnumValue name="B_ALSO"/>
+        <EnumValue name="B_ONLY"/>
+      </Enum>
+      <Function status="ignored" name="IDSnoopDevice" rtype="void">
+        <Argument type="const char *" unnamed="1" name="snooped_device"/>
+        <Argument type="const char *" unnamed="1" name="snooped_property"/>
+      </Function>
+      <Function status="ignored" name="IDSnoopBLOBs" rtype="void">
+        <Argument type="const char *" unnamed="1" name="snooped_device"/>
+        <Argument type="BLOBHandling" unnamed="1" name="bh"/>
+      </Function>
+      <Typedef status="ignored" name="IE_CBF" type="void (%s)(int, void *)"/>
+      <Typedef status="ignored" name="IE_TCF" type="void (%s)(void *)"/>
+      <Typedef status="ignored" name="IE_WPF" type="void (%s)(void *)"/>
+      <Function status="ignored" name="IEAddCallback" rtype="int">
+        <Argument type="int" unnamed="1" name="readfiledes"/>
+        <Argument type="IE_CBF *" unnamed="1" name="fp"/>
+        <Argument type="void *" unnamed="1" name="userpointer"/>
+      </Function>
+      <Function status="ignored" name="IERmCallback" rtype="void">
+        <Argument type="int" unnamed="1" name="callbackid"/>
+      </Function>
+      <Function status="ignored" name="IEAddTimer" rtype="int">
+        <Argument type="int" unnamed="1" name="millisecs"/>
+        <Argument type="IE_TCF *" unnamed="1" name="fp"/>
+        <Argument type="void *" unnamed="1" name="userpointer"/>
+      </Function>
+      <Function status="ignored" name="IERmTimer" rtype="void">
+        <Argument type="int" unnamed="1" name="timerid"/>
+      </Function>
+      <Function status="ignored" name="IEAddWorkProc" rtype="int">
+        <Argument type="IE_WPF *" unnamed="1" name="fp"/>
+        <Argument type="void *" unnamed="1" name="userpointer"/>
+      </Function>
+      <Function status="ignored" name="IERmWorkProc" rtype="void">
+        <Argument type="int" unnamed="1" name="workprocid"/>
+      </Function>
+      <Function status="ignored" name="IEDeferLoop" rtype="int">
+        <Argument type="int" unnamed="1" name="maxms"/>
+        <Argument type="int *" unnamed="1" name="flagp"/>
+      </Function>
+      <Function status="ignored" name="IEDeferLoop0" rtype="int">
+        <Argument type="int" unnamed="1" name="maxms"/>
+        <Argument type="int *" unnamed="1" name="flagp"/>
+      </Function>
+      <Function status="ignored" name="IUFindText" rtype="IText *">
+        <Argument type="const ITextVectorProperty *" unnamed="1" name="tvp"/>
+        <Argument type="const char *" unnamed="1" name="name"/>
+      </Function>
+      <Function status="ignored" name="IUFindNumber" rtype="INumber *">
+        <Argument type="const INumberVectorProperty *" unnamed="1" name="nvp"/>
+        <Argument type="const char *" unnamed="1" name="name"/>
+      </Function>
+      <Function status="ignored" name="IUFindSwitch" rtype="ISwitch *">
+        <Argument type="const ISwitchVectorProperty *" unnamed="1" name="svp"/>
+        <Argument type="const char *" unnamed="1" name="name"/>
+      </Function>
+      <Function status="ignored" name="IUFindLight" rtype="ILight *">
+        <Argument type="const ILightVectorProperty *" unnamed="1" name="lvp"/>
+        <Argument type="const char *" unnamed="1" name="name"/>
+      </Function>
+      <Function status="ignored" name="IUFindBLOB" rtype="IBLOB *">
+        <Argument type="const IBLOBVectorProperty *" unnamed="1" name="bvp"/>
+        <Argument type="const char *" unnamed="1" name="name"/>
+      </Function>
+      <Function status="ignored" name="IUFindOnSwitch" rtype="ISwitch *">
+        <Argument type="const ISwitchVectorProperty *" unnamed="1" name="sp"/>
+      </Function>
+      <Function status="ignored" name="IUFindOnSwitchIndex" rtype="int">
+        <Argument type="const ISwitchVectorProperty *" unnamed="1" name="sp"/>
+      </Function>
+      <Function status="ignored" name="IUResetSwitch" rtype="void">
+        <Argument type="ISwitchVectorProperty *" unnamed="1" name="svp"/>
+      </Function>
+      <Function status="ignored" name="IUUpdateSwitch" rtype="int">
+        <Argument type="ISwitchVectorProperty *" unnamed="1" name="svp"/>
+        <Argument type="ISState *" unnamed="1" name="states"/>
+        <Argument type="char **" unnamed="1" name="names"/>
+        <Argument type="int" unnamed="1" name="n"/>
+      </Function>
+      <Function status="ignored" name="IUUpdateNumber" rtype="int">
+        <Argument type="INumberVectorProperty *" unnamed="1" name="nvp"/>
+        <Argument type="double *" unnamed="1" name="values"/>
+        <Argument type="char **" unnamed="1" name="names"/>
+        <Argument type="int" unnamed="1" name="n"/>
+      </Function>
+      <Function status="ignored" name="IUUpdateText" rtype="int">
+        <Argument type="ITextVectorProperty *" unnamed="1" name="tvp"/>
+        <Argument type="char **" unnamed="1" name="texts"/>
+        <Argument type="char **" unnamed="1" name="names"/>
+        <Argument type="int" unnamed="1" name="n"/>
+      </Function>
+      <Function status="ignored" name="IUUpdateBLOB" rtype="int">
+        <Argument type="IBLOBVectorProperty *" unnamed="1" name="bvp"/>
+        <Argument type="int *" unnamed="1" name="sizes"/>
+        <Argument type="int *" unnamed="1" name="blobsizes"/>
+        <Argument type="char **" unnamed="1" name="blobs"/>
+        <Argument type="char **" unnamed="1" name="formats"/>
+        <Argument type="char **" unnamed="1" name="names"/>
+        <Argument type="int" unnamed="1" name="n"/>
+      </Function>
+      <Function status="ignored" name="IUSaveBLOB" rtype="int">
+        <Argument type="IBLOB *" unnamed="1" name="bp"/>
+        <Argument type="int" unnamed="1" name="size"/>
+        <Argument type="int" unnamed="1" name="blobsize"/>
+        <Argument type="char *" unnamed="1" name="blob"/>
+        <Argument type="char *" unnamed="1" name="format"/>
+      </Function>
+      <Function status="ignored" name="IUUpdateMinMax" rtype="void">
+        <Argument type="const INumberVectorProperty *" unnamed="1" name="nvp"/>
+      </Function>
+      <Function status="ignored" name="IUSaveText" rtype="void">
+        <Argument type="IText *" unnamed="1" name="tp"/>
+        <Argument type="const char *" unnamed="1" name="newtext"/>
+      </Function>
+      <Function status="ignored" name="IUFillSwitch" rtype="void">
+        <Argument type="ISwitch *" unnamed="1" name="sp"/>
+        <Argument type="const char *" unnamed="1" name="name"/>
+        <Argument type="const char *" unnamed="1" name="label"/>
+        <Argument type="ISState" unnamed="1" name="s"/>
+      </Function>
+      <Function status="ignored" name="IUFillLight" rtype="void">
+        <Argument type="ILight *" unnamed="1" name="lp"/>
+        <Argument type="const char *" unnamed="1" name="name"/>
+        <Argument type="const char *" unnamed="1" name="label"/>
+        <Argument type="IPState" unnamed="1" name="s"/>
+      </Function>
+      <Function status="ignored" name="IUFillNumber" rtype="void">
+        <Argument type="INumber *" unnamed="1" name="np"/>
+        <Argument type="const char *" unnamed="1" name="name"/>
+        <Argument type="const char *" unnamed="1" name="label"/>
+        <Argument type="const char *" unnamed="1" name="format"/>
+        <Argument type="double" unnamed="1" name="min"/>
+        <Argument type="double" unnamed="1" name="max"/>
+        <Argument type="double" unnamed="1" name="step"/>
+        <Argument type="double" unnamed="1" name="value"/>
+      </Function>
+      <Function status="ignored" name="IUFillText" rtype="void">
+        <Argument type="IText *" unnamed="1" name="tp"/>
+        <Argument type="const char *" unnamed="1" name="name"/>
+        <Argument type="const char *" unnamed="1" name="label"/>
+        <Argument type="const char *" unnamed="1" name="initialText"/>
+      </Function>
+      <Function status="ignored" name="IUFillBLOB" rtype="void">
+        <Argument type="IBLOB *" unnamed="1" name="bp"/>
+        <Argument type="const char *" unnamed="1" name="name"/>
+        <Argument type="const char *" unnamed="1" name="label"/>
+        <Argument type="const char *" unnamed="1" name="format"/>
+      </Function>
+      <Function status="ignored" name="IUFillSwitchVector" rtype="void">
+        <Argument type="ISwitchVectorProperty *" unnamed="1" name="svp"/>
+        <Argument type="ISwitch *" unnamed="1" name="sp"/>
+        <Argument type="int" unnamed="1" name="nsp"/>
+        <Argument type="const char *" unnamed="1" name="dev"/>
+        <Argument type="const char *" unnamed="1" name="name"/>
+        <Argument type="const char *" unnamed="1" name="label"/>
+        <Argument type="const char *" unnamed="1" name="group"/>
+        <Argument type="IPerm" unnamed="1" name="p"/>
+        <Argument type="ISRule" unnamed="1" name="r"/>
+        <Argument type="double" unnamed="1" name="timeout"/>
+        <Argument type="IPState" unnamed="1" name="s"/>
+      </Function>
+      <Function status="ignored" name="IUFillLightVector" rtype="void">
+        <Argument type="ILightVectorProperty *" unnamed="1" name="lvp"/>
+        <Argument type="ILight *" unnamed="1" name="lp"/>
+        <Argument type="int" unnamed="1" name="nlp"/>
+        <Argument type="const char *" unnamed="1" name="dev"/>
+        <Argument type="const char *" unnamed="1" name="name"/>
+        <Argument type="const char *" unnamed="1" name="label"/>
+        <Argument type="const char *" unnamed="1" name="group"/>
+        <Argument type="IPState" unnamed="1" name="s"/>
+      </Function>
+      <Function status="ignored" name="IUFillNumberVector" rtype="void">
+        <Argument type="INumberVectorProperty *" unnamed="1" name="nvp"/>
+        <Argument type="INumber *" unnamed="1" name="np"/>
+        <Argument type="int" unnamed="1" name="nnp"/>
+        <Argument type="const char *" unnamed="1" name="dev"/>
+        <Argument type="const char *" unnamed="1" name="name"/>
+        <Argument type="const char *" unnamed="1" name="label"/>
+        <Argument type="const char *" unnamed="1" name="group"/>
+        <Argument type="IPerm" unnamed="1" name="p"/>
+        <Argument type="double" unnamed="1" name="timeout"/>
+        <Argument type="IPState" unnamed="1" name="s"/>
+      </Function>
+      <Function status="ignored" name="IUFillTextVector" rtype="void">
+        <Argument type="ITextVectorProperty *" unnamed="1" name="tvp"/>
+        <Argument type="IText *" unnamed="1" name="tp"/>
+        <Argument type="int" unnamed="1" name="ntp"/>
+        <Argument type="const char *" unnamed="1" name="dev"/>
+        <Argument type="const char *" unnamed="1" name="name"/>
+        <Argument type="const char *" unnamed="1" name="label"/>
+        <Argument type="const char *" unnamed="1" name="group"/>
+        <Argument type="IPerm" unnamed="1" name="p"/>
+        <Argument type="double" unnamed="1" name="timeout"/>
+        <Argument type="IPState" unnamed="1" name="s"/>
+      </Function>
+      <Function status="ignored" name="IUFillBLOBVector" rtype="void">
+        <Argument type="IBLOBVectorProperty *" unnamed="1" name="bvp"/>
+        <Argument type="IBLOB *" unnamed="1" name="bp"/>
+        <Argument type="int" unnamed="1" name="nbp"/>
+        <Argument type="const char *" unnamed="1" name="dev"/>
+        <Argument type="const char *" unnamed="1" name="name"/>
+        <Argument type="const char *" unnamed="1" name="label"/>
+        <Argument type="const char *" unnamed="1" name="group"/>
+        <Argument type="IPerm" unnamed="1" name="p"/>
+        <Argument type="double" unnamed="1" name="timeout"/>
+        <Argument type="IPState" unnamed="1" name="s"/>
+      </Function>
+      <Function status="ignored" name="IUSnoopNumber" rtype="int">
+        <Argument type="XMLEle *" unnamed="1" name="root"/>
+        <Argument type="INumberVectorProperty *" unnamed="1" name="nvp"/>
+      </Function>
+      <Function status="ignored" name="IUSnoopText" rtype="int">
+        <Argument type="XMLEle *" unnamed="1" name="root"/>
+        <Argument type="ITextVectorProperty *" unnamed="1" name="tvp"/>
+      </Function>
+      <Function status="ignored" name="IUSnoopLight" rtype="int">
+        <Argument type="XMLEle *" unnamed="1" name="root"/>
+        <Argument type="ILightVectorProperty *" unnamed="1" name="lvp"/>
+      </Function>
+      <Function status="ignored" name="IUSnoopSwitch" rtype="int">
+        <Argument type="XMLEle *" unnamed="1" name="root"/>
+        <Argument type="ISwitchVectorProperty *" unnamed="1" name="svp"/>
+      </Function>
+      <Function status="ignored" name="IUSnoopBLOB" rtype="int">
+        <Argument type="XMLEle *" unnamed="1" name="root"/>
+        <Argument type="IBLOBVectorProperty *" unnamed="1" name="bvp"/>
+      </Function>
+      <Function status="ignored" name="ISGetProperties" rtype="void">
+        <Argument type="const char *" unnamed="1" name="dev"/>
+      </Function>
+      <Function status="ignored" name="ISNewText" rtype="void">
+        <Argument type="const char *" unnamed="1" name="dev"/>
+        <Argument type="const char *" unnamed="1" name="name"/>
+        <Argument type="char **" unnamed="1" name="texts"/>
+        <Argument type="char **" unnamed="1" name="names"/>
+        <Argument type="int" unnamed="1" name="n"/>
+      </Function>
+      <Function status="ignored" name="ISNewNumber" rtype="void">
+        <Argument type="const char *" unnamed="1" name="dev"/>
+        <Argument type="const char *" unnamed="1" name="name"/>
+        <Argument type="double *" unnamed="1" name="doubles"/>
+        <Argument type="char **" unnamed="1" name="names"/>
+        <Argument type="int" unnamed="1" name="n"/>
+      </Function>
+      <Function status="ignored" name="ISNewSwitch" rtype="void">
+        <Argument type="const char *" unnamed="1" name="dev"/>
+        <Argument type="const char *" unnamed="1" name="name"/>
+        <Argument type="ISState *" unnamed="1" name="states"/>
+        <Argument type="char **" unnamed="1" name="names"/>
+        <Argument type="int" unnamed="1" name="n"/>
+      </Function>
+      <Function status="ignored" name="ISNewBLOB" rtype="void">
+        <Argument type="const char *" unnamed="1" name="dev"/>
+        <Argument type="const char *" unnamed="1" name="name"/>
+        <Argument type="int *" unnamed="1" name="sizes"/>
+        <Argument type="int *" unnamed="1" name="blobsizes"/>
+        <Argument type="char **" unnamed="1" name="blobs"/>
+        <Argument type="char **" unnamed="1" name="formats"/>
+        <Argument type="char **" unnamed="1" name="names"/>
+        <Argument type="int" unnamed="1" name="n"/>
+      </Function>
+      <Function status="ignored" name="ISSnoopDevice" rtype="void">
+        <Argument type="XMLEle *" unnamed="1" name="root"/>
+      </Function>
+      <Function status="ignored" name="crackDN" rtype="int">
+        <Argument type="XMLEle *" unnamed="1" name="root"/>
+        <Argument type="char **" unnamed="1" name="dev"/>
+        <Argument type="char **" unnamed="1" name="name"/>
+        <Argument type="char *" unnamed="1" name="msg"/>
+      </Function>
+      <Function status="ignored" name="crackIPState" rtype="int">
+        <Argument type="const char *" unnamed="1" name="str"/>
+        <Argument type="IPState *" unnamed="1" name="ip"/>
+      </Function>
+      <Function status="ignored" name="crackISState" rtype="int">
+        <Argument type="const char *" unnamed="1" name="str"/>
+        <Argument type="ISState *" unnamed="1" name="ip"/>
+      </Function>
+      <Function status="ignored" name="crackIPerm" rtype="int">
+        <Argument type="const char *" unnamed="1" name="str"/>
+        <Argument type="IPerm *" unnamed="1" name="ip"/>
+      </Function>
+      <Function status="ignored" name="crackISRule" rtype="int">
+        <Argument type="const char *" unnamed="1" name="str"/>
+        <Argument type="ISRule *" unnamed="1" name="ip"/>
+      </Function>
+      <Function status="ignored" name="pstateStr" rtype="const char *">
+        <Argument type="IPState" unnamed="1" name="s"/>
+      </Function>
+      <Function status="ignored" name="sstateStr" rtype="const char *">
+        <Argument type="ISState" unnamed="1" name="s"/>
+      </Function>
+      <Function status="ignored" name="ruleStr" rtype="const char *">
+        <Argument type="ISRule" unnamed="1" name="r"/>
+      </Function>
+      <Function status="ignored" name="permStr" rtype="const char *">
+        <Argument type="IPerm" unnamed="1" name="p"/>
+      </Function>
+      <Function status="ignored" name="xmlv1" rtype="void">
+      </Function>
+    </SipFile>
+    <SipFile name="indicom.h">
+      <Variable status="ignored" name="Direction" type="const char **"/>
+      <Variable status="ignored" name="SolarSystem" type="const char **"/>
+      <OpaqueClass status="ignored" name="ln_date"/>
+      <Enum name="TTY_ERROR">
+        <EnumValue name="TTY_OK"/>
+        <EnumValue name="TTY_READ_ERROR"/>
+        <EnumValue name="TTY_WRITE_ERROR"/>
+        <EnumValue name="TTY_SELECT_ERROR"/>
+        <EnumValue name="TTY_TIME_OUT"/>
+        <EnumValue name="TTY_PORT_FAILURE"/>
+        <EnumValue name="TTY_PARAM_ERROR"/>
+        <EnumValue name="TTY_ERRNO"/>
+      </Enum>
+      <Function status="ignored" name="tty_read" rtype="int">
+        <Argument type="int" unnamed="1" name="fd"/>
+        <Argument type="char *" unnamed="1" name="buf"/>
+        <Argument type="int" unnamed="1" name="nbytes"/>
+        <Argument type="int" unnamed="1" name="timeout"/>
+        <Argument type="int *" unnamed="1" name="nbytes_read"/>
+      </Function>
+      <Function status="ignored" name="tty_read_section" rtype="int">
+        <Argument type="int" unnamed="1" name="fd"/>
+        <Argument type="char *" unnamed="1" name="buf"/>
+        <Argument type="char" unnamed="1" name="stop_char"/>
+        <Argument type="int" unnamed="1" name="timeout"/>
+        <Argument type="int *" unnamed="1" name="nbytes_read"/>
+      </Function>
+      <Function status="ignored" name="tty_write" rtype="int">
+        <Argument type="int" unnamed="1" name="fd"/>
+        <Argument type="const char *" unnamed="1" name="buffer"/>
+        <Argument type="int" unnamed="1" name="nbytes"/>
+        <Argument type="int *" unnamed="1" name="nbytes_written"/>
+      </Function>
+      <Function status="ignored" name="tty_write_string" rtype="int">
+        <Argument type="int" unnamed="1" name="fd"/>
+        <Argument type="const char *" unnamed="1" name="buffer"/>
+        <Argument type="int *" unnamed="1" name="nbytes_written"/>
+      </Function>
+      <Function status="ignored" name="tty_connect" rtype="int">
+        <Argument type="const char *" unnamed="1" name="device"/>
+        <Argument type="int" unnamed="1" name="bit_rate"/>
+        <Argument type="int" unnamed="1" name="word_size"/>
+        <Argument type="int" unnamed="1" name="parity"/>
+        <Argument type="int" unnamed="1" name="stop_bits"/>
+        <Argument type="int *" unnamed="1" name="fd"/>
+      </Function>
+      <Function status="ignored" name="tty_disconnect" rtype="int">
+        <Argument type="int" unnamed="1" name="fd"/>
+      </Function>
+      <Function status="ignored" name="tty_error_msg" rtype="void">
+        <Argument type="int" unnamed="1" name="err_code"/>
+        <Argument type="char *" unnamed="1" name="err_msg"/>
+        <Argument type="int" unnamed="1" name="err_msg_len"/>
+      </Function>
+      <Function status="ignored" name="tty_timeout" rtype="int">
+        <Argument type="int" unnamed="1" name="fd"/>
+        <Argument type="int" unnamed="1" name="timeout"/>
+      </Function>
+      <Function name="fs_sexa" rtype="int">
+        <Argument type="char *" unnamed="1" name="out"/>
+        <Argument type="double" unnamed="1" name="a"/>
+        <Argument type="int" unnamed="1" name="w"/>
+        <Argument type="int" unnamed="1" name="fracbase"/>
+      </Function>
+      <Function name="f_scansexa" rtype="int">
+        <Argument type="const char *" unnamed="1" name="str0"/>
+        <Argument type="double *" unnamed="1" name="dp"/>
+      </Function>
+      <Function status="ignored" name="extractISOTime" rtype="int">
+        <Argument type="char *" unnamed="1" name="timestr"/>
+        <Argument type="ln_date *" unnamed="1" name="iso_date"/>
+      </Function>
+      <Function name="getSexComponents" rtype="void">
+        <Argument type="double" unnamed="1" name="value"/>
+        <Argument type="int *" unnamed="1" name="d"/>
+        <Argument type="int *" unnamed="1" name="m"/>
+        <Argument type="int *" unnamed="1" name="s"/>
+      </Function>
+      <Function name="numberFormat" rtype="int">
+        <Argument type="char *" unnamed="1" name="buf"/>
+        <Argument type="const char *" unnamed="1" name="format"/>
+        <Argument type="double" unnamed="1" name="value"/>
+      </Function>
+      <Function name="timestamp" rtype="const char *">
+      </Function>
+    </SipFile>
+  </Module>
+</Project>
