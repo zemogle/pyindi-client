@@ -84,7 +84,7 @@ B_ONLY
   PyObject *getblobdata() {
     PyObject *result;
 
-    result = PyString_FromStringAndSize((const char*) $self->blob, $self->size);
+    result = PyByteArray_FromStringAndSize((const char*) $self->blob, $self->size);
     return result;
   }
  }
