@@ -34,12 +34,17 @@ set(CMAKE_SWIG_FLAGS "-c++" "-Wall" "-v" "-threads")
 
 # Create a BaseClient derived class which implements every virtual methods 
 SET_SOURCE_FILES_PROPERTIES(indiclientpython.i PROPERTIES CPLUSPLUS ON)
+SET_SOURCE_FILES_PROPERTIES(indidriverpython.i PROPERTIES CPLUSPLUS ON)
 #set_property(SOURCE indiclientphp.i PROPERTY SWIG_FLAGS "-fPIC")
 #SET_SOURCE_FILES_PROPERTIES(tclclient.cpp PROPERTIES CPLUSPLUS ON)
 SWIG_ADD_MODULE(PyIndi python indiclientpython.i)
+SWIG_ADD_MODULE(PyIndiDriver python indidriverpython.i)
 
 SWIG_LINK_LIBRARIES(PyIndi ${PYTHON_LIBRARIES} ${INDI_CLIENT_LIBRARIES} -lindi -lz)
+SWIG_LINK_LIBRARIES(PyIndiDriver ${PYTHON_LIBRARIES} ${INDI_DRIVER_LIBRARIES} ${INDI_CLIENT_LIBRARIES} -lindi -lz)
 
 execute_process(COMMAND python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()" OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
 install(TARGETS _PyIndi DESTINATION ${PYTHON_SITE_PACKAGES})
 install(FILES ${CMAKE_BINARY_DIR}/PyIndi.py DESTINATION ${PYTHON_SITE_PACKAGES})
+install(TARGETS _PyIndiDriver DESTINATION ${PYTHON_SITE_PACKAGES})
+install(FILES ${CMAKE_BINARY_DIR}/PyIndiDriver.py DESTINATION ${PYTHON_SITE_PACKAGES})
