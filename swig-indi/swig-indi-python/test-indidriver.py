@@ -8,6 +8,24 @@ import os
 import PyIndi
 import PyIndiDriver
 
+import random
+
+def strISState(s):
+    if (s == PyIndi.ISS_OFF):
+        return "Off"
+    else:
+        return "On"
+
+def strIPState(s):
+    if (s == PyIndi.IPS_IDLE):
+        return "Idle"
+    elif (s == PyIndi.IPS_OK):
+        return "Ok"
+    elif (s == PyIndi.IPS_BUSY):
+        return "Busy"
+    elif (s == PyIndi.IPS_ALERT):
+        return "Alert"
+
 isInit=False
 indidriver=None
 
@@ -29,6 +47,7 @@ def ISNewSwitch(dev, name, states, names, n):
     indidriver.ISNewSwitch(dev, name, states, names, n)
 
 def ISNewBLOB(dev, name, sizes, blobsizes, blobs, formats, names, n):
+    PyIndiDriver.IDLog("Main ISNewBLOB\n")
     indidriver.ISNewBLOB(dev, name, sizes, blobsizes, blobs, formats, names, n)
 
 # This is tutorial 4 Simple Skeleton
@@ -36,7 +55,7 @@ def ISNewBLOB(dev, name, sizes, blobsizes, blobs, formats, names, n):
 class IndiDriver(PyIndiDriver.DefaultDevice):
     def __init__(self):
         super(IndiDriver, self).__init__()
-        self.name="Python Simple Skeleton"
+        self.name="Python Skeleton"
         self.logger = logging.getLogger('PyIndiDriver.IndiDriver')
         self.logger.info('creating an instance of PyIndiDriver.BaseDevice')
     def ISGetProperties (self, dev):
@@ -54,7 +73,11 @@ class IndiDriver(PyIndiDriver.DefaultDevice):
             PyIndiDriver.IDSetNumber(nvp, "Cannot change property while device is disconnected.")
             return False
         if (name == "Number Property"):
-            PyIndiDriver.IUUpdateNumber(nvp, values, names, n)
+            cvalues=PyIndiDriver.new_doubleArray(n)
+            for i in range(len(values)):
+                self.logger.info('  ' + names[i] + ' = ' + str(values[i])) 
+                PyIndiDriver.doubleArray_setitem(cvalues, i, values[i])
+            PyIndiDriver.IUUpdateNumber(nvp, cvalues, names, n)
             print names
             nvp.s=PyIndi.IPS_OK
             PyIndiDriver.IDSetNumber(nvp, None)
@@ -66,15 +89,17 @@ class IndiDriver(PyIndiDriver.DefaultDevice):
         self.logger.info("ISNewSwitch " + dev + " property " + name)
         if (dev != self.name):
             return False    
+        # Build Clike array to call C++ method
+        # names is handled by swig (see %typemap(in) char *[]) 
         cstates=PyIndiDriver.new_ISStateArray(n)
         for i in range(len(states)):
-            self.logger.info("ISNewSwitch switches" + str(states[i]))
+            self.logger.info('  '+names[i] + ' = ' + str(states[i]))
             PyIndiDriver.ISStateArray_setitem(cstates, i, states[i])
         if super(IndiDriver, self).ISNewSwitch(dev, name, cstates, names, n):
             return True
-        PyIndiDriver.delete_ISStateArray(cstates)
+
         svp=self.getSwitch(name)
-        svp=self.getLight('Light Property')
+        lvp=self.getLight('Light Property')
         if not svp:
             return False
         if not self.isConnected():
@@ -84,16 +109,53 @@ class IndiDriver(PyIndiDriver.DefaultDevice):
         if not lvp:
             return False       
         if (name == "Menu"):
-            PyIndiDriver.IUUpdateSwitch(svp, states, names, n)
-            print names
-            svp.s=PyIndi.IPS_OK
-            lvp.s=PyIndi.IPS_OK
-            #PyIndiDriver.IDSetSwitch(svp, "Setting to switch %s is successful. Changing corresponding light property to %s.", onSW->name, pstateStr(lvp->lp[lightIndex].s))
-            PyIndiDriver.IDSetLight(lvp, None)
+            # Use the Clike array to call C methods
+            PyIndiDriver.IUUpdateSwitch(svp, cstates, names, n)
+            onSW=PyIndiDriver.IUFindOnSwitch(svp)
+            lightIndex=PyIndiDriver.IUFindOnSwitchIndex(svp)
+            if (lightIndex < 0 or lightIndex > lvp.nlp):
+                return False
+            if (onSW):
+                lightState=random.randint(0,3)
+                lvp[lightIndex].s=lightState # direct indexing of the vector, do not use lvp.lp
+                svp.s=PyIndi.IPS_OK
+                lvp.s=PyIndi.IPS_OK
+                PyIndiDriver.IDSetSwitch(svp, 'Setting to switch '+onSW.name+' is successful. Changing corresponding light property to '+strIPState(lvp[lightIndex].s))
+                PyIndiDriver.IDSetLight(lvp, None)
             return True           
+        PyIndiDriver.delete_ISStateArray(cstates)
         return False
     def ISNewBLOB (self, dev, name, sizes, blobsizes, blobs, formats, names, n):
         self.logger.info("ISNewBLOB " + dev + " property " + name)
+        if (dev != self.name):
+            return False
+        bvp=self.getBLOB(name)
+        if not bvp:
+            return False
+        if not self.isConnected():
+            bvp.s=PyIndi.IPS_ALERT
+            PyIndiDriver.IDSetNumber(bvp, "Cannot change property while device is disconnected.")
+            return False
+        if (bvp.name == "BLOB Test"):
+            csizes=PyIndiDriver.new_intArray(n)
+            for i in range(len(sizes)):
+                PyIndiDriver.intArray_setitem(csizes, i, sizes[i])
+                #PyIndiDriver.IDLog('BLOB '+str(i)+' Content:\n##################################\n'+blobs[i]+'\n##################################\n')
+            cblobsizes=PyIndiDriver.new_intArray(n)
+            for i in range(len(blobsizes)):
+                PyIndiDriver.intArray_setitem(cblobsizes, i, blobsizes[i])
+            
+            PyIndiDriver.IUUpdateBLOB(bvp, csizes, cblobsizes, blobs, formats, names, n);
+            bp = PyIndiDriver.IUFindBLOB(bvp, names[0])
+            if (not bp):
+                return False
+            PyIndiDriver.IDLog('Received BLOB with name '+bp.name+', format '+getattr(bp,'format')+', and size '+str(bp.size)+', and bloblen '+str(bp.bloblen)+'\n')
+            #PyIndiDriver.IDLog('BLOB Content:\n##################################\n'+str(bp.getblobdata())+'\n##################################\n')
+            bp.size=0
+            bvp.s = PyIndi.IPS_OK
+            PyIndiDriver.IDSetBLOB(bvp, None)
+        return True
+
     def getDefaultName(self):
         #self.logger.info("getDefaultName "+ self.name)
         return self.name
@@ -121,7 +183,27 @@ class IndiDriver(PyIndiDriver.DefaultDevice):
         # Let's print a list of all device properties
         lp=self.getProperties()
         for p in lp:
-            PyIndiDriver.IDLog("Property "+p.getName()+"\n")
+            PyIndiDriver.IDLog('Property '+p.getName()+' - ' + p.getLabel() + '\n')
+            if p.getType()==PyIndi.INDI_TEXT:
+                tpy=p.getText()
+                for t in tpy:
+                    PyIndiDriver.IDLog("       "+t.name+"("+t.label+")= "+t.text + '\n')
+            elif p.getType()==PyIndi.INDI_NUMBER:
+                tpy=p.getNumber()
+                for t in tpy:
+                    PyIndiDriver.IDLog("       "+t.name+"("+t.label+")= "+str(t.value) + '\n')
+            elif p.getType()==PyIndi.INDI_SWITCH:
+                tpy=p.getSwitch()
+                for t in tpy:
+                    PyIndiDriver.IDLog("       "+t.name+"("+t.label+")= "+strISState(t.s) + '\n')
+            elif p.getType()==PyIndi.INDI_LIGHT:
+                tpy=p.getLight()
+                for t in tpy:
+                    PyIndiDriver.IDLog("       "+t.name+"("+t.label+")= "+strIPState(t.s) + '\n')
+            elif p.getType()==PyIndi.INDI_BLOB:
+                tpy=p.getBLOB()
+                for t in tpy:
+                    PyIndiDriver.IDLog("       "+t.name+"("+t.label+")= <blob "+str(t.size)+" bytes>" + '\n')
         return True
     def Connect(self):
         self.logger.info("Connect "+self.getDefaultName())

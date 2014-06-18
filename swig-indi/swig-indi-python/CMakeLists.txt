@@ -18,6 +18,8 @@ include_directories(${PYTHON_INCLUDE_DIRS})
 #include_directories(${INDI_SRC_DIR})
 find_package(INDI)
 include_directories(${INDI_INCLUDE_DIR})
+find_package(CFITSIO)
+include_directories(${CFITSIO_INCLUDE_DIR})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -41,7 +43,7 @@ SWIG_ADD_MODULE(PyIndi python indiclientpython.i)
 SWIG_ADD_MODULE(PyIndiDriver python indidriverpython.i)
 
 SWIG_LINK_LIBRARIES(PyIndi ${PYTHON_LIBRARIES} ${INDI_CLIENT_LIBRARIES} -lindi -lz)
-SWIG_LINK_LIBRARIES(PyIndiDriver ${PYTHON_LIBRARIES} ${INDI_DRIVER_LIBRARIES} ${INDI_CLIENT_LIBRARIES} -lindi -lz)
+SWIG_LINK_LIBRARIES(PyIndiDriver ${PYTHON_LIBRARIES} ${CFITSIO_LIBRARIES} ${INDI_DRIVER_LIBRARIES} ${INDI_CLIENT_LIBRARIES} -lstdc++ -lindi -lz)
 
 execute_process(COMMAND python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()" OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
 install(TARGETS _PyIndi DESTINATION ${PYTHON_SITE_PACKAGES})

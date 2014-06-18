@@ -16,42 +16,42 @@ On
     </defNumber>
 </defNumberVector>
 <defLightVector device="Test Device" name="Light Property" label="" group="Main Control" state="Idle" timeout="0">
-    <defLight name="Light 1">
+    <defLight name="Light 1" label="L1">
         Idle
     </defLight>
-    <defLight name="Light 2">
+    <defLight name="Light 2" label="L2">
         Idle
     </defLight>
-    <defLight name="Light 3">
+    <defLight name="Light 3" label="L3">
         Idle
     </defLight>
-    <defLight name="Light 4">
+    <defLight name="Light 4" label="L4">
         Idle
     </defLight>
-    <defLight name="Light 5">
+    <defLight name="Light 5" label="L5">
         Idle
     </defLight>
 </defLightVector>
 <defSwitchVector device="Test Device" name="Menu" group="Main Control" state="Idle" perm="rw" rule="OneOfMany" timeout="60">
-    <defSwitch name="1x">
+    <defSwitch name="1x"  label="x1">
 On
     </defSwitch>
-    <defSwitch name="2x">
+    <defSwitch name="2x"  label="x2">
 Off
     </defSwitch>
-    <defSwitch name="3x">
+    <defSwitch name="3x"  label="x3">
 Off
     </defSwitch>
-    <defSwitch name="4x">
+    <defSwitch name="4x"  label="x4">
 Off
     </defSwitch>
-    <defSwitch name="5x">
+    <defSwitch name="5x"  label="x5">
 Off
     </defSwitch>
 
 </defSwitchVector>
 <defBLOBVector device="Test Device" name="BLOB Test" group="Main Control" state="Idle" perm="rw" timeout="60">
-    <defBLOB name="BLOB 1">
+    <defBLOB name="BLOB 1" label="First Blob">
     </defBLOB>
 </defBLOBVector>
 </INDIDriver>
