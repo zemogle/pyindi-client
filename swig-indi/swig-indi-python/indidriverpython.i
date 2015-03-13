@@ -44,6 +44,25 @@ class PyCCD: public INDI::CCD {
 
 %template(PropertyVector) std::vector<INDI::Property *>;
 
+%typemap(varin) const char * {
+   SWIG_Error(SWIG_AttributeError,"Variable $symname is read-only.");
+   SWIG_fail;
+}
+
+// Memory leak const std::string *
+%typemap(out) std::string {
+  $result = PyString_FromString($1.c_str());
+ } 
+
+%typemap(in) const std::string & (std::string temp) {
+  char * buf;
+  Py_ssize_t len;
+  if (PyString_AsStringAndSize($input, &buf, &len) == -1)
+    return NULL;
+  temp = std::string(buf, len);
+  $1 = &temp;
+ }
+
 %include "std_string.i"
 %include "carrays.i"
 
