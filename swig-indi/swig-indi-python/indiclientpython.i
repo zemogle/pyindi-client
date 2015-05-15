@@ -40,12 +40,12 @@
 %template(BaseDeviceVector) std::vector<INDI::BaseDevice *>;
 %template(PropertyVector) std::vector<INDI::Property *>;
 
+%include <indibasetypes.h>
 %include <indibase.h>
 %include <indiapi.h>
 %include <baseclient.h>
 %include <basedevice.h>
 %include <indiproperty.h>
-
 
 typedef enum {
 B_NEVER=0,
