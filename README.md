@@ -1,6 +1,6 @@
 # pyINDI-client
 
-** I did not write this library. I ported from GoogleCode to make my deployment easier https://code.google.com/p/pyindi-client/**
+** I did not write this library. I ported from GoogleCode to make my deployment easier https://code.google.com/p/pyindi-client/ **
 
 pyindi-client is a python binding for the libindi library. It contains a PyIndi module which mainly defines an IndiClient class. This class could be used to build python scripts able to interact with indi servers using sendNew* methods and implementing new* methods of the BaseMediator class. PyQt applications may also be built on top of IndiClient, thus allowing rapid development of GUI Indi clients.
 SWIG Binding
